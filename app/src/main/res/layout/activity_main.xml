@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <cc.ibooker.zedittextlib.ClearEditText
+        android:id="@+id/clearEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
+
+    <cc.ibooker.zedittextlib.PasswdEditText
+        android:id="@+id/passwdEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword" />
+
+    <cc.ibooker.zedittextlib.DrawableEditText
+        android:id="@+id/drawableEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@mipmap/icon_reduce"
+        android:drawableLeft="@mipmap/icon_add"
+        android:drawableRight="@mipmap/icon_reduce"
+        android:drawableStart="@mipmap/icon_add" />
+
+</LinearLayout>
