@@ -24,6 +24,7 @@
         android:drawableEnd="@mipmap/icon_reduce"
         android:drawableLeft="@mipmap/icon_add"
         android:drawableRight="@mipmap/icon_reduce"
-        android:drawableStart="@mipmap/icon_add" />
+        android:drawableStart="@mipmap/icon_add"
+        android:inputType="number" />
 
 </LinearLayout>
