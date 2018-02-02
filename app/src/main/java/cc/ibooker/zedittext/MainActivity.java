@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 带清空功能的EditText
         ClearEditText clearEditText = (ClearEditText) findViewById(R.id.clearEditText);
+        // 输入内容改变事件监听
         clearEditText.setOnTextChangedListener(new ClearEditText.OnTextChangedListener() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
