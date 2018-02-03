@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * 限制字数，显示剩余字数和输入字数
+ * 限制字数，显示已输入字数和限制输入字数
  * Created by 邹峰立 on 2017/7/17.
  */
 public class LimitNumEditText extends LinearLayout {
