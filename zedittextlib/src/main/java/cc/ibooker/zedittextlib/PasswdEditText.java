@@ -1,6 +1,7 @@
 package cc.ibooker.zedittextlib;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.InputType;
@@ -16,6 +17,7 @@ public class PasswdEditText extends android.support.v7.widget.AppCompatEditText 
      * 右侧Drawable引入
      */
     private Drawable mDrawableRight;
+    private int openPasswdRes, closePasswdRes;
     /**
      * 判断当前密码打开状态，默认关闭状态
      */
@@ -32,6 +34,12 @@ public class PasswdEditText extends android.support.v7.widget.AppCompatEditText 
 
     public PasswdEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PasswdEditText);
+        openPasswdRes = typedArray.getResourceId(R.styleable.PasswdEditText_openPasswdRes, R.mipmap.icon_open_eye);
+        closePasswdRes = typedArray.getResourceId(R.styleable.PasswdEditText_closePasswdRes, R.mipmap.icon_close_eye);
+        typedArray.recycle();
+
         init();
     }
 
@@ -51,19 +59,21 @@ public class PasswdEditText extends android.support.v7.widget.AppCompatEditText 
         int drawableId;
         // 通过状态设置DrawableRight的样式
         if (!isOpen)
-            drawableId = R.mipmap.icon_open_eye;
+            drawableId = openPasswdRes;
         else
-            drawableId = R.mipmap.icon_close_eye;
+            drawableId = closePasswdRes;
         // 初始化DrawableRight
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mDrawableRight = getResources().getDrawable(drawableId, null);
         } else {
             mDrawableRight = getResources().getDrawable(drawableId);
         }
-        // 设置Drawable大小和位置
-        mDrawableRight.setBounds(0, 0, mDrawableRight.getIntrinsicWidth(), mDrawableRight.getIntrinsicHeight());
-        // 将其添加到控件上
-        setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], mDrawableRight, getCompoundDrawables()[3]);
+//        // 设置Drawable大小和位置
+//        mDrawableRight.setBounds(0, 0, mDrawableRight.getIntrinsicWidth(), mDrawableRight.getIntrinsicHeight());
+//        // 将其添加到控件上
+//        setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], mDrawableRight, getCompoundDrawables()[3]);
+
+        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getCompoundDrawables()[1], mDrawableRight, getCompoundDrawables()[3]);
     }
 
     // 触摸事件
