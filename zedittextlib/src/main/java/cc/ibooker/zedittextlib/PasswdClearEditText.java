@@ -51,6 +51,7 @@ public class PasswdClearEditText extends FrameLayout {
                 imageView.setVisibility(visible ? VISIBLE : GONE);
             }
         });
+        clearEditText.setBackgroundResource(android.R.color.transparent);
         this.addView(clearEditText);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PasswdClearEditText);
@@ -94,4 +95,13 @@ public class PasswdClearEditText extends FrameLayout {
         Editable text = clearEditText.getText();
         clearEditText.setSelection(TextUtils.isEmpty(text) ? 0 : text.length());
     }
+
+    public ClearEditText getClearEditText() {
+        return clearEditText;
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
 }
