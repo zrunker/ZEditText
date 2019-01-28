@@ -24,6 +24,7 @@ public class PasswdClearEditText extends FrameLayout {
      * 右侧Drawable引入
      */
     private int openPasswdRes, closePasswdRes;
+    private int clearRes;
     /**
      * 判断当前密码打开状态，默认关闭状态
      */
@@ -40,11 +41,19 @@ public class PasswdClearEditText extends FrameLayout {
     public PasswdClearEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PasswdClearEditText);
+        openPasswdRes = typedArray.getResourceId(R.styleable.PasswdClearEditText_openPasswdCeRes, R.mipmap.icon_open_eye);
+        closePasswdRes = typedArray.getResourceId(R.styleable.PasswdClearEditText_closePasswdCeRes, R.mipmap.icon_close_eye);
+        clearRes = typedArray.getResourceId(R.styleable.PasswdClearEditText_clearCeRes, R.mipmap.icon_clear);
+        int eyeDistanceRight = typedArray.getInteger(R.styleable.PasswdClearEditText_eyeDistanceRight, 25);
+        typedArray.recycle();
+
         clearEditText = new ClearEditText(context);
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START | Gravity.CENTER_VERTICAL);
         clearEditText.setLayoutParams(params);
         clearEditText.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
         clearEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        clearEditText.setClearRes(clearRes);
         clearEditText.setOnDrawRightVisible(new ClearEditText.OnDrawRightVisible() {
             @Override
             public void isDrawableRightVisible(boolean visible) {
@@ -54,15 +63,10 @@ public class PasswdClearEditText extends FrameLayout {
         clearEditText.setBackgroundResource(android.R.color.transparent);
         this.addView(clearEditText);
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PasswdClearEditText);
-        openPasswdRes = typedArray.getResourceId(R.styleable.PasswdClearEditText_openPasswdCeRes, R.mipmap.icon_open_eye);
-        closePasswdRes = typedArray.getResourceId(R.styleable.PasswdClearEditText_closePasswdCeRes, R.mipmap.icon_close_eye);
-        typedArray.recycle();
-
         imageView = new ImageView(context);
         imageView.setImageResource(openPasswdRes);
         LayoutParams params1 = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.END | Gravity.CENTER_VERTICAL);
-        params1.rightMargin = clearEditText.getmClearDrawable().getIntrinsicWidth() + 25;
+        params1.rightMargin = clearEditText.getClearDrawable().getIntrinsicWidth() + eyeDistanceRight;
         imageView.setLayoutParams(params1);
         imageView.setPadding(5, 5, 5, 5);
         imageView.setVisibility(GONE);
@@ -96,11 +100,11 @@ public class PasswdClearEditText extends FrameLayout {
         clearEditText.setSelection(TextUtils.isEmpty(text) ? 0 : text.length());
     }
 
-    public ClearEditText getClearEditText() {
+    public ClearEditText getEditText() {
         return clearEditText;
     }
 
-    public ImageView getImageView() {
+    public ImageView getEyeView() {
         return imageView;
     }
 

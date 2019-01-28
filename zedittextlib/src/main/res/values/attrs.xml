@@ -13,6 +13,8 @@
     <declare-styleable name="PasswdClearEditText">
         <attr name="openPasswdCeRes" format="reference" />
         <attr name="closePasswdCeRes" format="reference" />
+        <attr name="clearCeRes" format="reference" />
+        <attr name="eyeDistanceRight" format="integer" />
     </declare-styleable>
 
 </resources>
