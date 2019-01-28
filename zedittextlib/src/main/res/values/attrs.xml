@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <declare-styleable name="ClearEditText">
+        <attr name="clearRes" format="reference" />
+    </declare-styleable>
+
     <declare-styleable name="PasswdEditText">
         <attr name="openPasswdRes" format="reference" />
         <attr name="closePasswdRes" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="PasswdClearEditText">
+        <attr name="openPasswdCeRes" format="reference" />
+        <attr name="closePasswdCeRes" format="reference" />
+    </declare-styleable>
 
 </resources>

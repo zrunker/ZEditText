@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -45,6 +46,8 @@ public class PasswdEditText extends android.support.v7.widget.AppCompatEditText 
 
     // 初始化方法
     private void init() {
+        // 最开始设置不可见
+        setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         // Drawable顺序左上右下，0123
         // 获取DrawRight内容
         mDrawableRight = getCompoundDrawables()[2];
@@ -99,7 +102,7 @@ public class PasswdEditText extends android.support.v7.widget.AppCompatEditText 
                     else
                         setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     // 设置光标位置
-                    setSelection(getText().length());
+                    setSelection(TextUtils.isEmpty(getText()) ? 0 : getText().length());
                 }
                 break;
         }

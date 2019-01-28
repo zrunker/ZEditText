@@ -29,6 +29,10 @@
         android:drawableStart="@mipmap/icon_add"
         android:inputType="number" />
 
+    <cc.ibooker.zedittextlib.PasswdClearEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <cc.ibooker.zedittextlib.LimitNumEditText
         android:id="@+id/limitNumEditText"
         android:layout_width="match_parent"

@@ -1,9 +1,11 @@
 package cc.ibooker.zedittextlib;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -18,6 +20,7 @@ public class ClearEditText extends android.support.v7.widget.AppCompatEditText i
      * 删除Drawable引用
      */
     private Drawable mClearDrawable;
+    private int clearRes;
     /**
      * 控件是否有焦点
      */
@@ -34,6 +37,11 @@ public class ClearEditText extends android.support.v7.widget.AppCompatEditText i
 
     public ClearEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ClearEditText);
+        clearRes = typedArray.getResourceId(R.styleable.ClearEditText_clearRes, R.mipmap.icon_clear);
+        typedArray.recycle();
+
         init();
     }
 
@@ -45,9 +53,9 @@ public class ClearEditText extends android.support.v7.widget.AppCompatEditText i
         if (mClearDrawable == null) {
             // 未设置默认DrawableRight
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mClearDrawable = getResources().getDrawable(R.mipmap.icon_clear, null);
+                mClearDrawable = getResources().getDrawable(clearRes, null);
             } else {
-                mClearDrawable = getResources().getDrawable(R.mipmap.icon_clear);
+                mClearDrawable = getResources().getDrawable(clearRes);
             }
         }
         // 设置Drawable大小和位置
@@ -58,18 +66,25 @@ public class ClearEditText extends android.support.v7.widget.AppCompatEditText i
         addTextChangedListener(this);
     }
 
+    public Drawable getmClearDrawable() {
+        return mClearDrawable;
+    }
+
     // 焦点改变事件
     // 当焦点在时，通过判断输入值，实现隐藏和现实DrawableRight
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         this.hasFocus = hasFocus;
-        if (hasFocus) {
+        if (hasFocus && !TextUtils.isEmpty(getText())) {
             // 焦点存在，而且有输入值
-            setDrawableRightightVisible(getText().length() > 0);
+            setDrawableRightVisible(getText().length() > 0);
         } else {
             // 焦点不存在时候，隐藏DrawableRight
-            setDrawableRightightVisible(false);
+            setDrawableRightVisible(false);
         }
+        // 监听焦点事件
+        if (onFocusChangeListener != null)
+            onFocusChangeListener.onFocusChange(v, hasFocus);
     }
 
     /**
@@ -77,10 +92,14 @@ public class ClearEditText extends android.support.v7.widget.AppCompatEditText i
      *
      * @param visible true=显示，false=隐藏
      */
-    private void setDrawableRightightVisible(boolean visible) {
+    private void setDrawableRightVisible(boolean visible) {
         // 控件setCompoundDrawables设置Drawable，隐藏则设置null，左上右下
         Drawable drawableRight = visible ? mClearDrawable : null;
         setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], drawableRight, getCompoundDrawables()[3]);
+
+        // 监听事件
+        if (onDrawRightVisible != null)
+            onDrawRightVisible.isDrawableRightVisible(visible);
     }
 
     // 触摸事件-实现ClearDrawable清空功能
@@ -115,7 +134,7 @@ public class ClearEditText extends android.support.v7.widget.AppCompatEditText i
     @Override
     public void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         if (hasFocus) {
-            setDrawableRightightVisible(text.length() > 0);
+            setDrawableRightVisible(text.length() > 0);
         }
         if (onTextChangedListener != null)
             onTextChangedListener.onTextChanged(text, start, lengthBefore, lengthAfter);
@@ -141,5 +160,27 @@ public class ClearEditText extends android.support.v7.widget.AppCompatEditText i
 
     public void setOnTextChangedListener(OnTextChangedListener onTextChangedListener) {
         this.onTextChangedListener = onTextChangedListener;
+    }
+
+    // 焦点事件
+    public interface OnFocusChangeListener {
+        void onFocusChange(View v, boolean hasFocus);
+    }
+
+    private OnFocusChangeListener onFocusChangeListener;
+
+    public void setOnFocusChangeListener(OnFocusChangeListener onFocusChangeListener) {
+        this.onFocusChangeListener = onFocusChangeListener;
+    }
+
+    // DrawRight显示或隐藏事件
+    public interface OnDrawRightVisible {
+        void isDrawableRightVisible(boolean visible);
+    }
+
+    private OnDrawRightVisible onDrawRightVisible;
+
+    public void setOnDrawRightVisible(OnDrawRightVisible onDrawRightVisible) {
+        this.onDrawRightVisible = onDrawRightVisible;
     }
 }
