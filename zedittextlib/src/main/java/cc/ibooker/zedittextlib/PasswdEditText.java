@@ -98,7 +98,7 @@ public class PasswdEditText extends android.support.v7.widget.AppCompatEditText 
                     setmDrawableRight(isOpen);
                     // 执行点击事件-隐藏或显示
                     if (isOpen)
-                        setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                        setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     else
                         setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     // 设置光标位置
