@@ -17,4 +17,8 @@
         <attr name="eyeDistanceRight" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="LimitNumEditText">
+        <attr name="backGround" format="reference" />
+        <attr name="maxWordsNum" format="integer" />
+    </declare-styleable>
 </resources>

@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 .setTextViewSize(16)
                 .setTextViewColor("#894563")
                 .setTextViewMargin(15, 15, 15, 15)
+                .setSignInputHaveNumColor("#000000")
                 .setOnMoreMaxWordsNumListener(new LimitNumEditText.OnMoreMaxWordsNumListener() {
                     @Override
                     public void onMoreMaxWordsNum(int maxNum) {

@@ -1,12 +1,17 @@
 package cc.ibooker.zedittextlib;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -24,6 +29,7 @@ public class LimitNumEditText extends LinearLayout {
     private TextView textView;
     private LinearLayout.LayoutParams layoutParams;
     private int maxWordsNum = 0;// 默认为0
+    private String signInputHaveNumColor;// 标记显示已输入字数颜色值
 
     public LimitNumEditText(Context context) {
         this(context, null);
@@ -37,6 +43,14 @@ public class LimitNumEditText extends LinearLayout {
         super(context, attrs, defStyleAttr);
         this.context = context;
         init();
+        if (attrs != null) {
+            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LimitNumEditText);
+            int backGround = typedArray.getResourceId(R.styleable.LimitNumEditText_backGround, R.drawable.bg_limitnum_edittext);
+            this.setBackgroundResource(backGround);
+            maxWordsNum = typedArray.getInt(R.styleable.LimitNumEditText_maxWordsNum, 0);
+            setEditTextMaxWordsNum(maxWordsNum);
+            typedArray.recycle();
+        }
     }
 
     // 初始化
@@ -44,7 +58,6 @@ public class LimitNumEditText extends LinearLayout {
         layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         this.setOrientation(LinearLayout.VERTICAL);
-        this.setBackgroundResource(R.drawable.bg_limitnum_edittext);
         layoutParams.setMargins(0, 0, 0, 0);
         this.setLayoutParams(layoutParams);
         this.setPadding(0, 0, 0, 0);
@@ -73,8 +86,7 @@ public class LimitNumEditText extends LinearLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 int num = s.length();
-                if (textView != null)
-                    textView.setText(num + "/" + maxWordsNum);
+                updateSignTv();
                 if (num >= maxWordsNum) {
                     if (onMoreMaxWordsNumListener != null)
                         onMoreMaxWordsNumListener.onMoreMaxWordsNum(maxWordsNum);
@@ -149,8 +161,7 @@ public class LimitNumEditText extends LinearLayout {
         this.maxWordsNum = maxWordsNum;
         if (editText != null) {
             editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxWordsNum)});
-            if (textView != null)
-                textView.setText(editText.getText().length() + "/" + maxWordsNum);
+            updateSignTv();
         }
         return this;
     }
@@ -182,6 +193,17 @@ public class LimitNumEditText extends LinearLayout {
         return this;
     }
 
+    /**
+     * 标记显示已输入字数颜色值
+     *
+     * @param color 待显示颜色值
+     */
+    public LimitNumEditText setSignInputHaveNumColor(String color) {
+        this.signInputHaveNumColor = color;
+        updateSignTv();
+        return this;
+    }
+
     // 设置标记控件Margin
     public LimitNumEditText setTextViewMargin(int left, int top, int right, int bottom) {
         if (textView != null && layoutParams != null) {
@@ -204,6 +226,25 @@ public class LimitNumEditText extends LinearLayout {
     // 暴露最大字数
     public int getMaxWordsNum() {
         return maxWordsNum;
+    }
+
+    // 更新标记TextView
+    private void updateSignTv() {
+        if (textView != null && editText != null) {
+            int num = editText.getText().length();
+            String text = num + "/" + maxWordsNum;
+            if (!TextUtils.isEmpty(signInputHaveNumColor)) {
+                try {
+                    SpannableString spannableString = new SpannableString(text);
+                    spannableString.setSpan(new ForegroundColorSpan(Color.parseColor(signInputHaveNumColor)),
+                            0, (num + "").length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    textView.setText(spannableString);
+                } catch (Exception e) {
+                    textView.setText(text);
+                }
+            } else
+                textView.setText(text);
+        }
     }
 
     // 当输入字数多于最大字数事件接口
