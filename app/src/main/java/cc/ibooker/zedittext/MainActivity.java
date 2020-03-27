@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // 带清空功能的EditText
-        ClearEditText clearEditText = (ClearEditText) findViewById(R.id.clearEditText);
+        ClearEditText clearEditText = findViewById(R.id.clearEditText);
         // 输入内容改变事件监听
         clearEditText.setOnTextChangedListener(new ClearEditText.OnTextChangedListener() {
             @Override
@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // 带显示和隐藏功能的EditText
-        PasswdEditText passwdEditText = (PasswdEditText) findViewById(R.id.passwdEditText);
+        PasswdEditText passwdEditText = findViewById(R.id.passwdEditText);
 
         // 带Drawable监听的EditText
-        final DrawableEditText drawableEditText = (DrawableEditText) findViewById(R.id.drawableEditText);
+        final DrawableEditText drawableEditText = findViewById(R.id.drawableEditText);
         drawableEditText.setGravity(Gravity.CENTER);
         drawableEditText.setOnDrawableLeftListener(new DrawableEditText.OnDrawableLeftListener() {
             @Override
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // 带输入字数限制和显示输入字数的EditText
-        LimitNumEditText limitNumEditText = (LimitNumEditText) findViewById(R.id.limitNumEditText);
+        LimitNumEditText limitNumEditText = findViewById(R.id.limitNumEditText);
         limitNumEditText.setEditTextSize(16)
                 .setEditTextMargin(20, 20, 20, 20)
                 .setEditTextColor("#FF0Fad")
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 .setEditTextMaxLines(10)
                 .setEditTextHint("你好啊")
                 .setEditTextHintColor("#405ff2")
-                .setEditTextMaxWordsNum(10)
+                .setEditTextMaxWordsNum(100)
                 .setTextViewSize(16)
                 .setTextViewColor("#894563")
                 .setTextViewMargin(15, 15, 15, 15)

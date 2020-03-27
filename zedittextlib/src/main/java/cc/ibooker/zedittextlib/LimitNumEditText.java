@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -67,7 +66,6 @@ public class LimitNumEditText extends LinearLayout {
         editText.setLayoutParams(layoutParams);
         editText.setPadding(0, 0, 0, 0);
         editText.setTextSize(14);
-        editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         editText.setBackgroundResource(android.R.color.transparent);
         editText.setGravity(Gravity.TOP | Gravity.START);
         editText.addTextChangedListener(new TextWatcher() {
@@ -190,6 +188,13 @@ public class LimitNumEditText extends LinearLayout {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return this;
+    }
+
+    // 设置输入类型
+    public LimitNumEditText setInputType(int type) {
+        if (editText != null)
+            editText.setInputType(type);
         return this;
     }
 
