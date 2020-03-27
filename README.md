@@ -11,7 +11,7 @@ allprojects {
 	}
 }
 dependencies {
-	compile 'com.github.zrunker:ZEditText:v1.0.1'
+	compile 'com.github.zrunker:ZEditText:v1.0.4.5'
 }
 ```
 2、在maven文件中添加以下代码：
@@ -25,7 +25,7 @@ dependencies {
 <dependency>
 	<groupId>com.github.zrunker</groupId>
 	<artifactId>ZEditText</artifactId>
-	<version>v1.0.1</version>
+	<version>v1.0.4.5</version>
 </dependency>
 ```
 用法：
