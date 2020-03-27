@@ -102,12 +102,6 @@ public class LimitNumEditText extends LinearLayout {
                     if (onMoreMaxWordsNumListener != null)
                         onMoreMaxWordsNumListener.onMoreMaxWordsNum(maxWordsNum);
                 }
-
-//                if (s.length() > maxWordsNum) {
-////                    CharSequence subText = s.subSequence(0, maxWordsNum);
-//                    editText.setText(tempText);
-//                    editText.setSelection(tempText.length());
-//                }
                 if (onTextChangedListener != null)
                     onTextChangedListener.afterTextChanged(s);
             }
