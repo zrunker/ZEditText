@@ -27,7 +27,7 @@ public class LimitNumEditText extends LinearLayout {
     private EditText editText;
     private TextView textView;
     private LinearLayout.LayoutParams layoutParams;
-    private int maxWordsNum = 0;// 默认为0
+    private int maxWordsNum = Integer.MAX_VALUE;// 默认为最大
     private String signInputHaveNumColor;// 标记显示已输入字数颜色值
 
     public LimitNumEditText(Context context) {
@@ -46,7 +46,7 @@ public class LimitNumEditText extends LinearLayout {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LimitNumEditText);
             int backGround = typedArray.getResourceId(R.styleable.LimitNumEditText_backGround, R.drawable.bg_limitnum_edittext);
             this.setBackgroundResource(backGround);
-            maxWordsNum = typedArray.getInt(R.styleable.LimitNumEditText_maxWordsNum, 0);
+            maxWordsNum = typedArray.getInt(R.styleable.LimitNumEditText_maxWordsNum, Integer.MAX_VALUE);
             setEditTextMaxWordsNum(maxWordsNum);
             typedArray.recycle();
         }
@@ -69,10 +69,15 @@ public class LimitNumEditText extends LinearLayout {
         editText.setBackgroundResource(android.R.color.transparent);
         editText.setGravity(Gravity.TOP | Gravity.START);
         editText.addTextChangedListener(new TextWatcher() {
+            private CharSequence tempText;
+            private int selectionStart;
+            private int selectionEnd;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if (onTextChangedListener != null)
                     onTextChangedListener.beforeTextChanged(s, start, count, after);
+                tempText = s;
             }
 
             @Override
@@ -83,12 +88,26 @@ public class LimitNumEditText extends LinearLayout {
 
             @Override
             public void afterTextChanged(Editable s) {
-                int num = s.length();
                 updateSignTv();
-                if (num >= maxWordsNum) {
+
+                selectionStart = editText.getSelectionStart();
+                selectionEnd = editText.getSelectionEnd();
+                if (tempText.length() > maxWordsNum) {
+                    s.delete(selectionStart - 1, selectionEnd);
+                    int tempSelection = selectionStart;
+                    editText.setText(s);
+                    // 设置光标在最后
+                    editText.setSelection(tempSelection);
+
                     if (onMoreMaxWordsNumListener != null)
                         onMoreMaxWordsNumListener.onMoreMaxWordsNum(maxWordsNum);
                 }
+
+//                if (s.length() > maxWordsNum) {
+////                    CharSequence subText = s.subSequence(0, maxWordsNum);
+//                    editText.setText(tempText);
+//                    editText.setSelection(tempText.length());
+//                }
                 if (onTextChangedListener != null)
                     onTextChangedListener.afterTextChanged(s);
             }
@@ -158,7 +177,7 @@ public class LimitNumEditText extends LinearLayout {
     public LimitNumEditText setEditTextMaxWordsNum(int maxWordsNum) {
         this.maxWordsNum = maxWordsNum;
         if (editText != null) {
-            editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxWordsNum)});
+            editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxWordsNum + 1)});
             updateSignTv();
         }
         return this;
@@ -238,6 +257,10 @@ public class LimitNumEditText extends LinearLayout {
         if (textView != null && editText != null) {
             int num = editText.getText().length();
             String text = num + "/" + maxWordsNum;
+            if (maxWordsNum == Integer.MAX_VALUE)
+                text = num + "/∞";
+            else if (maxWordsNum <= 0)
+                text = num + "/0";
             if (!TextUtils.isEmpty(signInputHaveNumColor)) {
                 try {
                     SpannableString spannableString = new SpannableString(text);

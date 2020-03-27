@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 .setEditTextMaxLines(10)
                 .setEditTextHint("你好啊")
                 .setEditTextHintColor("#405ff2")
-                .setEditTextMaxWordsNum(100)
+                .setEditTextMaxWordsNum(10)
                 .setTextViewSize(16)
                 .setTextViewColor("#894563")
                 .setTextViewMargin(15, 15, 15, 15)
